@@ -1,0 +1,127 @@
+---
+title: "hw1"
+author: "Mutian Wang"
+date: "2020/2/8"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+4.1
+```{r}
+library(tidyverse)
+df = read_csv('liver.csv')
+ggplot(df) + 
+  geom_point(aes(liquor, cirrhosis)) + 
+  ggtitle('Cirrhosis v. Liquor') + 
+  theme(plot.title = element_text(hjust = 0.5))
+```
+4.5 model (a)
+```{r}
+fit = lm(df$cirrhosis ~ df$liquor)
+summary(fit)
+```
+4.5 model (b)
+```{r}
+x = df$liquor - mean(df$liquor)
+y = df$cirrhosis
+fit1 = lm(y ~ x)
+summary(fit1)
+```
+4.7
+```{r}
+coef = as.numeric(coefficients(fit))
+coef[1]+180*coef[2]
+
+coef = as.numeric(coefficients(fit1))
+coef[1]+(180-mean(df$liquor))*coef[2]
+```
+4.8 model (a)
+```{r}
+ggplot() + 
+  geom_point(aes(df$liquor, residuals(fit))) + 
+  geom_hline(yintercept=0, color='red') + 
+  ggtitle('Model (a)') + 
+  theme(plot.title = element_text(hjust = 0.5))
+
+qqnorm(residuals(fit), main='Model (a) Normal Q-Q Plot')
+qqline(residuals(fit), col='red')
+```
+4.8 model (b)
+```{r}
+ggplot() + 
+  geom_point(aes(df$liquor, residuals(fit1))) + 
+  geom_hline(yintercept=0, color='red') + 
+  ggtitle('Model (b)') + 
+  theme(plot.title = element_text(hjust = 0.5))
+
+qqnorm(residuals(fit1), main='Model (b) Normal Q-Q Plot')
+qqline(residuals(fit1), col='red')
+```
+4.9
+```{r}
+confint(fit)
+```
+4.10
+```{r}
+beta_list = c()
+for (i in seq(1000)){
+ df_t = as.data.frame(t(as.matrix(df)))
+ bootstrap = sample(df_t, replace = T)
+ bootstrap = as.data.frame(t(as.matrix(bootstrap)))
+ fit = lm(bootstrap$cirrhosis ~ bootstrap$liquor)
+ beta = as.numeric(coefficients(fit))[2]
+ beta_list[i] = beta
+}
+
+quantile(beta_list,probs=c(0.025,0.975))
+
+ggplot() + 
+  geom_histogram(aes(beta_list, ..density..)) + 
+  labs(x=expression(beta))
+```
+4.11
+```{r}
+cor(df$cirrhosis, df$liquor)
+cor_list = c()
+for (i in seq(length(df$liquor))){
+  cor_list[i] = cor(df[-c(i),])[1,2]
+}
+diff = cor_list - cor(df$cirrhosis, df$liquor)
+quantile(diff)
+
+idx1 = which(diff==max(diff))
+print(df[idx1,])
+
+idx2 = which(diff==min(diff))
+print(df[idx2,])
+```
+
+5.4
+```{r}
+library(tidyverse)
+data = c(rep(2,179), rep(3,51), rep(4,17), rep(5,6), rep(6,8), rep(7,1), rep(9,2))
+n = length(data)
+mu = seq(0.8, 1.6, 0.1)
+loglikelihood = -n*log(exp(mu)-1-mu) - sum(log(factorial(data))) + log(mu)*sum(data)
+
+ggplot() + 
+  geom_line(aes(mu, loglikelihood)) + 
+  geom_point(aes(mu, loglikelihood)) + 
+  labs(x = expression(mu), y = 'Log Likelihood')
+```
+
+5.5
+```{r}
+data <- c(rep(2,179), rep(3,51), rep(4,17), rep(5,6), 
+         rep(6,8), rep(7,1), rep(9,2))
+n <- length(data)
+fun <- function(mu){
+ n*log(exp(mu)-1-mu) + sum(log(factorial(data))) - log(mu)*sum(data) 
+}
+nlm(fun, mu <- 1, hessian = T) # Non-Linear Minimization using a Newton-type algorithm
+```
+
