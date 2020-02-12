@@ -1,0 +1,87 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{algpseudocode,algorithm}
+\usepackage{graphicx}
+\usepackage{psfrag,color}
+\usepackage{fullpage}
+\usepackage{epsfig}
+\usepackage{graphicx}
+
+\setlength{\topmargin}{-0.7in}
+\setlength{\textwidth}{6.5in}
+\setlength{\oddsidemargin}{0.0in}
+\setlength{\textheight}{10.0in}
+\setlength{\parindent}{0in}
+
+\renewcommand{\baselinestretch}{1.2}
+\renewcommand\arraystretch{1.5}
+\newcommand{\problem}[1]{ \medskip \pp $\underline{\rm Problem\ #1}$\\ }
+
+
+\pagestyle{empty}
+
+\def\pp{\par\noindent}
+
+
+\begin{document}
+
+\begin{flushright}
+{\bf STAT GR5703---Spring 2020}
+\end{flushright}
+\begin{flushleft}
+Group: Zining Fan, Mutian Wang, Siyuan Wang\\
+UNI: zf2234, mw3386, sw3418\\
+\end{flushleft}
+
+\bigskip
+\centerline{\bf Graded Homework 1- Exercise 1}
+
+\bigskip 
+\begin{enumerate}
+\item
+As the probability density function of d is:
+\[f(d;\lambda) = \lambda e^{-\lambda d}\]
+To get a $p^{th}$ population quantitle:
+\[\int_{0}^{x} \lambda e^{-\lambda x} dx = p\]
+\[-\frac{1}{\lambda} e^{-\lambda x} + \frac{1}{\lambda} e^0= \frac{p}{\lambda}\]
+So the $p^{th}$ population quantitle is:
+\[x = Q_D(p) = -\frac{\ln(1-p)}{\lambda}\]
+\item
+From the expectation of exponential distribution:
+\[E(D) = \frac{1}{\lambda}\]
+\[Q_D(p) = -\ln(1-p) E(D)\]
+The first empirical moment is: 
+\[\hat{\mu}_1 = \bar{D_n}\]
+\[\hat{Q_D(p)}^{MM}_1 = \varphi^{-1}(\hat{\mu}_1)\]
+\[= -\ln(1-p) \bar{D_n}\]
+
+\item
+From CLT we know that:
+\[\bar{D_n} \sim N(\frac{1}{\lambda},\frac{1}{n\lambda^2})\]
+\[-\ln(1-p) \bar{D_n} \sim N(-\frac{\ln(1-p)}{\lambda},\frac{(\ln(1-p))^2}{n\lambda^2})\]
+\[\frac{-\ln(1-p) \bar{D_n} - -\frac{\ln(1-p)}{\lambda}}{\frac{-\ln(1-p)}{\sqrt{n}\lambda}}\sim N(0,1)\]
+The margin should be:
+\[Z_{1-\frac{\alpha}{2}} \frac{-\ln(1-p)}{\sqrt{n} \lambda}\]
+So the confidence interval should be:
+\[[-\ln(1-p) \bar{D_n} -  Z_{1-\frac{\alpha}{2}} \frac{-\ln(1-p)}{\sqrt{n} \lambda},-\ln(1-p) \bar{D_n} +  Z_{1-\frac{\alpha}{2}} \frac{-\ln(1-p)}{\sqrt{n} \lambda}]\]
+
+
+\item
+As $D_i \sim exp(\lambda)$,
+$\lambda D_i \sim exp(1)$, which can be written as:
+\[\lambda D_i \sim gamma(1,1)\]
+\[\sum \limits_{i=1}^{n} \lambda D_i \sim gamma(n,1)\]
+\[\frac{1}{n}\sum \limits_{i=1}^{n} \lambda D_i \sim gamma(n,n)\]
+so that:
+\[\lambda \bar{D_n} \sim gamma(n,n)\]
+As we know that $\lambda = \frac{\ln{2}}{Q_p(0.5)}$, we could construct the interval:
+\[gamma_{\frac{\alpha}{2}}(n,n) \leq \frac{\ln2 \bar{D_n}}{Q_p(0.5)} \leq gamma_{1-\frac{\alpha}{2}(n,n)}\]
+Get that:
+\[\frac{\ln{2}\bar{D_n}}{gamma_{1-\frac{\alpha}{2}}(n,n)} \leq \hat{Q_p(0.5)} \leq \frac{\ln{2}\bar{D_n}}{gamma_{\frac{\alpha}{2}}(n,n)}\]
+So the exact confidence interval should be:
+\[[\frac{\ln{2}\bar{D_n}}{gamma_{1-\frac{\alpha}{2}}(n,n)},\frac{\ln{2}\bar{D_n}}{gamma_{\frac{\alpha}{2}}(n,n)}]\]
+
+\bigskip 
+\end{enumerate}
+\end{document}
