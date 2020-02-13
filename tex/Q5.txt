@@ -1,0 +1,18 @@
+$minimum
+[1] 288.5289
+
+$estimate
+[1] 1.398391
+
+$gradient
+[1] -2.398301e-06
+
+$hessian
+         [,1]
+[1,] 95.45589
+
+$code
+[1] 1
+
+$iterations
+[1] 6
