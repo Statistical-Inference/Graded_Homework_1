@@ -1,0 +1,122 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{algpseudocode,algorithm}
+\usepackage{graphicx}
+\usepackage{psfrag,color}
+\usepackage{fullpage}
+\usepackage{epsfig}
+\usepackage{graphicx}
+\usepackage{verbatim}
+\usepackage{listings}
+
+\setlength{\topmargin}{-0.7in}
+\setlength{\textwidth}{6.5in}
+\setlength{\oddsidemargin}{0.0in}
+\setlength{\textheight}{10.0in}
+\setlength{\parindent}{0in}
+
+\renewcommand{\baselinestretch}{1.2}
+\renewcommand\arraystretch{1.5}
+\newcommand{\problem}[1]{ \medskip \pp $\underline{\rm Problem\ #1}$\\ }
+
+
+\pagestyle{empty}
+
+\def\pp{\par\noindent}
+
+
+\begin{document}
+
+\begin{flushright}
+{\bf STAT GR5703---Spring 2020}
+\end{flushright}
+\begin{flushleft}
+Group: Zining Fan, Mutian Wang, Siyuan Wang\\
+UNI: zf2234, mw3386, sw3418\\
+\end{flushleft}
+
+\bigskip
+\centerline{\bf Graded Homework 1 - Exercise 3}
+
+\bigskip 
+\begin{enumerate}
+%3.1
+    \item \par
+    $\gamma=E[{R_1}^3]$. Based on the moment generating function, we could get:
+    \[\phi'''(0)=E[{R_1}^3]\]
+    Since $R_1\sim N(\mu,\sigma^2)$, we could get the MGF:
+    \[\phi(t)=e^{t\mu+0.5\sigma^2t^2}\]
+    So, 
+    \[\phi'''(t)=(2\sigma^4t+2\mu\sigma^2)e^{t\mu+0.5\sigma^2t^2}+(\mu^2+\sigma^4t^2+2\mu\sigma^2t+\sigma^2)(\mu+\sigma^2t)e^{t\mu+0.5\sigma^2t^2}\]
+    Plug in $t=0$ we could get that,
+    \[\phi'''(0)=\mu^3+3\mu\sigma^2\]
+    So, $\gamma = E[{R_1}^3]=\mu^3+3\mu\sigma^2$. 
+    
+%3.2
+    \item
+    \begin{enumerate}
+        \item 
+	$\hat{\gamma}=(\frac{1}{n}\sum_{i=1}^{n} R_i)^3=(\bar{R})^3$. We want to calculate the bias of this estimator, $E[\hat{\gamma}]-\gamma$. Since $R_1\sim N(\mu,\sigma^2)$, based on the CLT, we could get that:
+        \[\bar{R}\sim N(\mu,\frac{\sigma^2}{n})\]
+        Now we have a question similar to the above one. 
+        \[E[{\bar{R}}^3]=\Phi'''(0)\]
+        \[\Phi(t)=e^{t\mu+\frac{1}{2n}\sigma^2t^2}\]
+        So, 
+        \[\Phi'''(0)=\mu^3+\frac{3\mu\sigma^2}{n} = E[(\bar{R})^3]\]
+        then,
+        \[E[\hat{\gamma}]-\gamma=E[(\bar{R})^3]-E[{R_1}^3]=\mu^3+\frac{3\mu\sigma^2}{n}-(\mu^3+3\mu\sigma^2)\]
+        So, the bias of this estimator is that 
+        \[E[\hat{\gamma}]-\gamma=3(\frac{1}{n}-1)\mu\sigma^2\]
+        
+        
+        \item \par
+        $\hat{\gamma}$ is not consistent.
+        \\Since $\hat{\gamma}=(\bar{R})^3$, as $n\rightarrow\infty$, due to WLLN and Continuous Mapping Theorem,  $\hat{\gamma}\rightarrow\mu^3$. While $\gamma=\mu^3+3\mu\sigma^2$. So, this estimator is not consistent. 
+    \end{enumerate}
+    
+%3.3
+    \item
+    We claim that $U(R) = (\bar{R})^3 + 3(1-\frac{1}{n})\bar{R}S^2$ is an unbiased estimator for $\gamma$, where $S=\frac{1}{n-1}\sum (R_i-\bar{R})^2$ and $E[S^2]=\sigma^2$. \par
+    We have already shown that $E[(\bar{R})^3]=\mu^3+\frac{3\mu\sigma^2}{n}$. \par
+    Since $R_i$ is $i.i.d.$ normal, $\bar{R}$ and $S^2$ are independent. That is, $E[\bar{R}S^2]=E[\bar{R}]\cdot E[S^2]=\mu\sigma^2$. \par
+    Therefore, we have  
+    $$E[(\bar{R})^3 + 3(1-\frac{1}{n})\bar{R}S^2] = E[(\bar{R})^3] + 3(1-\frac{1}{n})E[\bar{R}]\cdot E[S^2] 
+    = \mu^3 + 3\mu\sigma^2 = \gamma$$
+    Thus we have proven that $U(R)$ is an unbiased estimator for $\gamma$.
+    
+    
+%3.4
+    \item
+    \begin{enumerate}
+        \item We want to calculate $E[\tilde{\gamma}]-\gamma$. \[E[\tilde{\gamma}]=E[\frac{1}{n}\sum_{i=1}^{n}{R_i}^3]=\frac{1}{n}\sum_{i=1}^{n}E[{R_i}^3]\]
+        Since $E[{R_i}^3]=E[{R_1}^3]$ for any $i$, we have $E[\tilde{\gamma}]=E[R_1^3]=\gamma$.
+        So, the bias of this estimator is 
+        \[E[\tilde{\gamma}]-\gamma=0\]
+        \item
+        By WLLN, we have 
+        $$\tilde{\gamma}=\frac{1}{n}\sum R_i^3 \xrightarrow[n\rightarrow\infty]{P} E[R_1^3] 
+        = \gamma$$
+        Therefore, $\tilde{\gamma}$ is consistent. 
+    \end{enumerate}
+    
+%3.5
+    \item
+    It is proven in point 3 that $U(R) = (\bar{R})^3 + 3(1-\frac{1}{n})\bar{R}S^2$ is an unbiased estimator for $\gamma$, where $S=\frac{1}{n-1}\sum (R_i-\bar{R})^2$ and $E[S^2]=\sigma^2$. \par
+    \vspace{0.4cm}
+    According to the slides, the minimal sufficient statistic for normal distribution is that \[T(R)=\left(\sum_{i=1}^{n}R_i, \sum_{i=1}^{n}({R_i}-\bar{R_i})^2 \right)\propto(\bar{R},S^2)\] 
+   \vspace{0.4cm}
+    Using the Rao-Blackwell Theorem, we can get a new unbiased estimator $\mathring{\gamma}=E[U(R)|T(R)]$.
+    \begin{equation*}
+    \begin{split}
+    \mathring{\gamma} &=E[U(R)|T(R)] \\
+    &=E\left[(\bar{R})^3 + 3(1-\frac{1}{n})\bar{R}S^2|\bar{R},S^2 \right] \\
+    &=(\bar{R})^3 + 3(1-\frac{1}{n})\bar{R}S^2
+    \end{split}
+    \end{equation*}
+    
+    That is, the unbiased estimator $U(R)$ has already had the minimum variance.
+    
+
+\end{enumerate}
+\end{document}
